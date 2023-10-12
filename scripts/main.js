@@ -13,10 +13,14 @@ require([
 	// Route
 	'esri/rest/route',
 	'esri/rest/support/RouteParameters',
-	"esri/rest/support/FeatureSet",
+	'esri/rest/support/FeatureSet',
 	//  FeatureLayer
 	'esri/layers/FeatureLayer',
-	'esri/Graphic'
+	'esri/Graphic',
+	// Auth
+	'esri/portal/Portal',
+	'esri/identity/OAuthInfo',
+	'esri/identity/IdentityManager'
 ], function (
 	esriConfig,
 	MapView,
@@ -30,7 +34,10 @@ require([
 	RouteParameters,
 	FeatureSet,
 	FeatureLayer,
-	Graphic
+	Graphic,
+	Portal,
+	OAuthInfo,
+	esriId
 ) {
 	// Authen, API KEY
 	esriConfig.apiKey = 'AAPK584432533b2d450aa1896d7cd53a5bdf-p5aIT04Tgcr2-yZGHhIr3dvdii2omJT8hDsLhIDao_HS6PETYveE1cI4tbIizqR';
@@ -41,6 +48,38 @@ require([
 		'ad5759bf407c4554b748356ebe1886e5',
 		'45ded9b3e0e145139cc433b503a8f5ab'
 	];
+
+	const info = new OAuthInfo({
+		appId: 'lmCEozrsRQ2IWerS',
+		popup: false // the default
+	});
+	esriId.registerOAuthInfos([info]);
+
+	function handleSignedIn() {
+
+		const portal = new Portal();
+		portal.load().then(() => {
+			const results = {
+				name: portal.user.fullName,
+				username: portal.user.username
+			};
+			document.getElementById('results').innerText = JSON.stringify(results, null, 2);
+		});
+
+	}
+
+	esriId
+		.checkSignInStatus(info.portalUrl + '/sharing')
+		.then(() => {
+			handleSignedIn();
+		})
+		.catch(() => {
+			handleSignedOut();
+		});
+
+	function handleSignedOut() {
+		document.getElementById('results').innerText = 'Signed Out'
+	}
 
 	// Display web map
 	/************************************************************
@@ -60,6 +99,13 @@ require([
 		});
 	});
 
+	document.getElementById("sign-in").addEventListener("click", function () {
+		esriId.getCredential(info.portalUrl + "/sharing");
+	});
+	document.getElementById("sign-out").addEventListener("click", function () {
+		esriId.destroyCredentials();
+		window.location.reload();
+	});
 	/************************************************************
 	 * Set the WebMap instance to the map property in a MapView.
 	 ************************************************************/
@@ -307,17 +353,17 @@ require([
 
 	// FIND ROUTE
 	const routeUrl = 'https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World';
-	view.on("click", function(event){
-		if (view.graphics.length === 0) {
-			addGraphic("origin", event.mapPoint);
-		} else if (view.graphics.length === 1) {
-			addGraphic("destination", event.mapPoint);
+	view.on('click', function (event) {
+		if(view.graphics.length === 0) {
+			addGraphic('origin', event.mapPoint);
+		} else if(view.graphics.length === 1) {
+			addGraphic('destination', event.mapPoint);
 
 			getRoute(); // Call the route service
 
 		} else {
 			view.graphics.removeAll();
-			addGraphic("origin",event.mapPoint);
+			addGraphic('origin', event.mapPoint);
 		}
 
 	});
@@ -325,9 +371,9 @@ require([
 	function addGraphic(type, point) {
 		const graphic = new Graphic({
 			symbol: {
-				type: "simple-marker",
-				color: (type === "origin") ? "white" : "black",
-				size: "8px"
+				type: 'simple-marker',
+				color: (type === 'origin') ? 'white' : 'black',
+				size: '8px'
 			},
 			geometry: point
 		});
@@ -345,10 +391,10 @@ require([
 		});
 
 		route.solve(routeUrl, routeParams)
-			.then(function(data) {
-				data.routeResults.forEach(function(result) {
+			.then(function (data) {
+				data.routeResults.forEach(function (result) {
 					result.route.symbol = {
-						type: "simple-line",
+						type: 'simple-line',
 						color: [5, 150, 255],
 						width: 3
 					};
@@ -356,32 +402,33 @@ require([
 				});
 
 				// Display directions
-				if (data.routeResults.length > 0) {
-					const directions = document.createElement("ol");
-					directions.classList = "esri-widget esri-widget--panel esri-directions__scroller";
-					directions.style.marginTop = "0";
-					directions.style.padding = "15px 15px 15px 30px";
+				if(data.routeResults.length > 0) {
+					const directions = document.createElement('ol');
+					directions.classList = 'esri-widget esri-widget--panel esri-directions__scroller';
+					directions.style.marginTop = '0';
+					directions.style.padding = '15px 15px 15px 30px';
 					const features = data.routeResults[0].directions.features;
 
 					// Show each direction
-					features.forEach(function(result,i){
-						const direction = document.createElement("li");
-						direction.innerHTML = result.attributes.text + " (" + result.attributes.length.toFixed(2) + " miles)";
+					features.forEach(function (result, i) {
+						const direction = document.createElement('li');
+						direction.innerHTML = result.attributes.text + ' (' + result.attributes.length.toFixed(2) + ' miles)';
 						directions.appendChild(direction);
 					});
 
-					view.ui.empty("top-right");
-					view.ui.add(directions, "top-right");
+					view.ui.empty('top-right');
+					view.ui.add(directions, 'top-right');
 
 				}
 
 			})
 
-			.catch(function(error){
+			.catch(function (error) {
 				console.log(error);
 			})
 
 	}
+
 	// Save a web map: FAILED ❌❌❌
 	// view.when(() => {
 	// 	// When the webmap and view resolve, display the webmap's
