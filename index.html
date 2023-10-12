@@ -1,0 +1,227 @@
+<html lang='en'>
+<head>
+	<meta charset='utf-8'/>
+	<meta
+		name='viewport'
+		content='initial-scale=1,maximum-scale=1,user-scalable=no'
+	/>
+	<title>
+		Edit features with the Editor widget | Sample | ArcGIS Maps SDK for
+		JavaScript 4.27
+	</title>
+
+	<link
+		rel='stylesheet'
+		href='https://js.arcgis.com/4.27/esri/themes/light/main.css'
+	/>
+	<link
+		rel='stylesheet'
+		href='./styles/modal.css'
+	/>
+	<link
+		rel='stylesheet'
+		href='./styles/main.css'
+	/>
+	<script src='https://cdn.tailwindcss.com'></script>
+</head>
+<body>
+
+<section class='header esri-widget'>
+	<div class='btns'>
+		<div
+			class='btn-switch active-map'
+			data-id='0'>Mio Map
+		</div>
+		<div
+			class='btn-switch'
+			data-id='1'>Refugee Routes
+		</div>
+		<div
+			class='btn-switch'
+			data-id='2'>2015 European Sea Arrivals
+		</div>
+	</div>
+</section>
+<div
+	id='viewDiv'
+	class='esri-widget'></div>
+<div
+	id='actions'
+	class='esri-widget'>
+	<button
+		class='esri-button'
+		type='button'
+		id='add'
+	>
+		Add feature
+	</button>
+	<button
+		class='esri-button'
+		id='remove'>Remove feature
+	</button>
+</div>
+<div class='modal-wrapper'>
+	<div class='modal'>
+		<h1 class='mb-4 text-4xl'>Thêm điểm</h1>
+		<form action=''>
+			<div class='mb-2'>
+				<label
+					class='block text-gray-700 text-sm font-bold mb-2'
+					for='name'>
+					Tên địa điểm (đồng hồ nước)
+				</label>
+				<input
+					class='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+					id='name'
+					type='text'
+					placeholder='Ex: SaigonMio'>
+			</div>
+			<div class='mb-2'>
+				<label
+					class='block text-gray-700 text-sm font-bold mb-2'
+					for='name'>
+					Địa chỉ
+				</label>
+				<input
+					class='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+					id='address'
+					type='text'
+					placeholder='EX: 21 đường số 6'/>
+			</div>
+			<div class='mb-2 flex'>
+				<div class='col-6'>
+					<label
+						class='block text-gray-700 text-sm font-bold mb-2'
+						for='name'>
+						Name
+					</label>
+					<input
+						class='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+						id='name'
+						type='text'
+						placeholder='Text input'>
+				</div>
+				<div class='col-6'>
+					<label
+						class='block text-gray-700 text-sm font-bold mb-2'
+						for='name'>
+						Name
+					</label>
+					<input
+						class='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+						id='name'
+						type='text'
+						placeholder='Text input'>
+				</div>
+			</div>
+<!--			<div class='mb-2'>-->
+<!--				<label-->
+<!--					class='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'-->
+<!--					for='grid-state'>-->
+<!--					Subject-->
+<!--				</label>-->
+<!--				<div class='relative'>-->
+<!--					<select class='block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'>-->
+<!--						<option>Select dropdown</option>-->
+<!--						<option>With options</option>-->
+<!--					</select>-->
+<!--					<div class='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700'>-->
+<!--						<svg-->
+<!--							class='fill-current h-4 w-4'-->
+<!--							xmlns='http://www.w3.org/2000/svg'-->
+<!--							viewBox='0 0 20 20'>-->
+<!--							<path d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z'/>-->
+<!--						</svg>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--			<div class='mb-2'>-->
+<!--				<label class='block'>-->
+<!--					<input-->
+<!--						class='mr-2 leading-tight'-->
+<!--						type='checkbox'>-->
+<!--					<span class='text-sm'>-->
+<!--        I agree this-->
+<!--      </span>-->
+<!--				</label>-->
+<!--			</div>-->
+<!--			<div class='mb-2'>-->
+<!--				<label class='inline-flex items-center'>-->
+<!--					<input-->
+<!--						type='radio'-->
+<!--						class='form-radio'-->
+<!--						name='accountType'-->
+<!--						value='1'>-->
+<!--					<span class='ml-2'>Yes</span>-->
+<!--				</label>-->
+<!--				<label class='inline-flex items-center ml-6'>-->
+<!--					<input-->
+<!--						type='radio'-->
+<!--						class='form-radio'-->
+<!--						name='accountType'-->
+<!--						value='2'>-->
+<!--					<span class='ml-2'>No</span>-->
+<!--				</label>-->
+<!--			</div>-->
+			<div class='mb-2'>
+				<label class='block text-gray-700 text-sm font-bold mb-2'>
+					Message
+					<textarea
+						class='shadow form-textarea mt-1 block w-full border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+						rows='5'
+						placeholder='Textarea'></textarea>
+				</label>
+			</div>
+			<div class='flex items-center justify-end gap-2'>
+				<button
+					class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+					type='button'>
+					Lưu
+				</button>
+				<button
+					id='close-modal'
+					class='bg-slate-500 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+					type='button'>
+					Đóng
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+<!--<div-->
+<!--	id='sidebarDiv'-->
+<!--	class='esri-widget'>-->
+<!--	<h4 class='esri-heading'>Save WebMap</h4>-->
+<!--	<label class='esri-feature-form__label'>Title</label>-->
+<!--	<input-->
+<!--		id='webMapTitle'-->
+<!--		type='text'-->
+<!--		class='esri-input'-->
+<!--		value='My WebMap'-->
+<!--	/>-->
+<!--	<input-->
+<!--		id='saveWebMap'-->
+<!--		type='button'-->
+<!--		value='Save'-->
+<!--		disabled-->
+<!--		class='esri-button'-->
+<!--	/>-->
+<!--</div>-->
+<!--<div-->
+<!--	id='overlayDiv'-->
+<!--	class='esri-widget'>-->
+<!--	<h4-->
+<!--		class='esri-heading'-->
+<!--		id='head'></h4>-->
+<!--	<label id='info'></label>-->
+<!--	<input-->
+<!--		type='button'-->
+<!--		value='OK'-->
+<!--		class='esri-button'/>-->
+<!--</div>-->
+
+<script src='https://js.arcgis.com/4.27/'></script>
+<script src='./scripts/modal.js'></script>
+<script src='./scripts/main.js'></script>
+</body>
+</html>

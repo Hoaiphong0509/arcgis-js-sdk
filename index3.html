@@ -1,0 +1,138 @@
+<html lang='en'>
+<head>
+	<meta charset='utf-8'/>
+	<meta
+		name='viewport'
+		content='initial-scale=1,maximum-scale=1,user-scalable=no'
+	/>
+	<title>
+		Edit features with the Editor widget | Sample | ArcGIS Maps SDK for
+		JavaScript 4.27
+	</title>
+
+	<link
+		rel='stylesheet'
+		href='https://js.arcgis.com/4.27/esri/themes/light/main.css'
+	/>
+	<script src='https://js.arcgis.com/4.27/'></script>
+
+	<style>
+		html,
+		body,
+		#viewDiv {
+			padding: 0;
+			margin: 0;
+			height: 100%;
+			width: 100%;
+		}
+	</style>
+
+	<script>
+		require([
+			'esri/config',
+			'esri/WebMap',
+			'esri/views/MapView',
+			'esri/widgets/Search',
+			'esri/widgets/ScaleBar',
+			'esri/widgets/Legend',
+			"esri/layers/FeatureLayer"
+		], function (esriConfig, WebMap, MapView, Search, ScaleBar, Legend, FeatureLayer ) {
+			esriConfig.apiKey = 'AAPK584432533b2d450aa1896d7cd53a5bdf-p5aIT04Tgcr2-yZGHhIr3dvdii2omJT8hDsLhIDao_HS6PETYveE1cI4tbIizqR';
+
+			// const map = new Map({
+			// 	basemap: 'arcgis-topographic' // Basemap layer service
+			// });
+			const webmap = new WebMap({
+				portalItem: {
+					// id: "4793230052ed498ebf1c7bed9966bd35"
+					id: '803871218002404fb78a1785c58a297b'
+				}
+			});
+
+			const view = new MapView({
+				map: webmap,
+				container: 'viewDiv' // Div element
+			});
+
+			const scalebar = new ScaleBar({
+				view: view
+			});
+
+			view.ui.add(scalebar, 'bottom-left');
+
+			// const legend = new Legend ({
+			// 	view: view
+			// });
+			// view.ui.add(legend, "top-right");
+
+			const search = new Search({  //Add Search widget
+				view: view
+			});
+			view.ui.add(search, 'bottom-right');
+
+
+			// Feature layer
+			const featureLayer = new FeatureLayer({
+				source: graphics,
+				"places": [
+					{
+						"id": 1,
+						"address": "200 N Spring St, Los Angeles, CA 90012",
+						"longitude": -118.24354,
+						"latitude": 34.05389
+					},
+					{
+						"id": 2,
+						"address": "419 N Fairfax Ave, Los Angeles, CA 90036",
+						"longitude": -118.31966,
+						"latitude": 34.13375
+					}
+				],
+				renderer: {
+					type: 'simple',                    // autocasts as new SimpleRenderer()
+					symbol: {                          // autocasts as new SimpleMarkerSymbol()
+						type: 'simple-marker',
+						color: '#D3171F',
+						outline: {                       // autocasts as new SimpleLineSymbol()
+							color: '#D3171F',
+							width: 10
+						}
+					}
+				},
+				popupTemplate: {                     // autocasts as new PopupTemplate()
+					title: 'Places in Los Angeles',
+					content: [{
+						type: 'fields',
+						fieldInfos: [
+							{
+								fieldName: 'address',
+								label: 'Address',
+								visible: true
+							}
+						]
+					}]
+				},
+				objectIdField: 'ObjectID',           // This must be defined when creating a layer from `Graphic` objects
+				fields: [
+					{
+						name: 'ObjectID',
+						alias: 'ObjectID',
+						type: 'oid'
+					},
+					{
+						name: 'address',
+						alias: 'address',
+						type: 'string'
+					}
+				]
+			});
+
+			webmap.layers.add(featureLayer);
+		});
+	</script>
+</head>
+
+<body>
+<div id='viewDiv'></div>
+</body>
+</html>

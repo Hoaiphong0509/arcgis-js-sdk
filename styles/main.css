@@ -1,0 +1,92 @@
+html,
+body {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+
+#viewDiv {
+	position: absolute;
+	right: 0;
+	left: 0;
+	top: 60px;
+	bottom: 0;
+}
+
+#add {
+	margin-bottom: 5px;
+}
+
+#actions {
+	padding: 5px;
+	widtH: 400px;
+}
+
+button:disabled {
+	opacity: 0.4;
+	-moz-opacity: 0.4; /* Firefox and Mozilla browsers */
+	-webkit-opacity: 0.4; /* Safari */
+	cursor: default;
+}
+
+.header {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 10%;
+}
+
+.btns {
+	margin: 0 auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	overflow: auto;
+}
+
+.btn-switch {
+	flex-grow: 4;
+	background-color: rgba(34, 111, 14, 0.5);
+	color: #fff;
+	margin: 1px;
+	width: 50%;
+	padding: 20px;
+	overflow: auto;
+	text-align: center;
+	cursor: pointer;
+}
+
+.active-map {
+	color: #fff;
+	background-color: rgba(34, 111, 14, 1);
+}
+
+#sidebarDiv {
+	width: 240px;
+	padding: 10px;
+	height: 200px;
+}
+
+#overlayDiv {
+	z-index: 1;
+	position: absolute;
+	margin: auto auto;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 300px;
+	height: 240px;
+	padding: 10px;
+	background-color: white;
+	border: 1px solid grey;
+	visibility: hidden;
+}
+
+input[type="text"] {
+	width: 100%;
+	margin-bottom: 20px;
+}
