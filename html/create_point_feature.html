@@ -1,0 +1,137 @@
+<!--
+
+To run this demo, you need to replace 'YOUR_API_KEY' with an API key from the ArcGIS Developers dashboard.
+
+Sign up for a free account and get an API key.
+
+https://developers.arcgis.com/documentation/mapping-apis-and-services/get-started/
+
+-->
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <title>
+      ArcGIS Maps SDK for JavaScript Tutorials: Change the basemap layer
+    </title>
+    <style>
+      html, body, #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.27/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.27/"></script>
+
+    <script>
+                require([
+              "esri/Map",
+              "esri/views/MapView",
+              "esri/Graphic",
+              "esri/config",
+            ], function (Map, MapView, Graphic, esriConfig) {
+
+              esriConfig.apiKey = "AAPK75703c0758314001befb358d9c14a646eav8lyA91CQDTCRhozbR4Ft7tVeZBgmvUIQBqhW6SjsznTTc0au_yl8I1HP5USqJ";
+
+
+              // Create a map and view
+            //   const map = new Map({
+            //     basemap: "streets", // Choose a basemap
+            //   });
+
+            //   const view = new MapView({
+            //     container: "viewDiv", // Replace with your map container ID
+            //     map: map,
+            //     center: [106.69911358045161,10.742809983058823],
+            //     zoom: 18, // Initial map zoom
+            //   });
+
+              require([
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/Graphic",
+        "esri/layers/FeatureLayer",
+        'esri/WebMap',
+      ], function (Map, MapView, Graphic, FeatureLayer, WebMap) {
+
+        esriConfig.apiKey = "AAPK75703c0758314001befb358d9c14a646eav8lyA91CQDTCRhozbR4Ft7tVeZBgmvUIQBqhW6SjsznTTc0au_yl8I1HP5USqJ";
+
+        // Create a map and view
+        const map = new WebMap({
+            portalItem: {
+                id: "26541bf45f434201bf219300a0313f04"
+            }
+         });
+
+        // const map = new Map({
+        //   basemap: "streets", // Choose a basemap
+        // });
+
+
+
+        const view = new MapView({
+          container: "viewDiv", // Replace with your map container ID
+          map: map,
+        //   center: [106.69911358045161,10.742809983058823],
+        //   zoom: 18, // Initial map zoom
+        });
+
+        // Add a click event listener
+        view.on("click", function (event) {
+          // Get the coordinates of the click
+          const lat = event.mapPoint.latitude;
+          const lon = event.mapPoint.longitude;
+
+          // Create a point feature
+          const point = {
+            type: "point",
+            x: lon,
+            y: lat,
+          };
+
+          // Create a graphic for the point feature
+          const pointGraphic = new Graphic({
+            geometry: point,
+            symbol: {
+              type: "simple-marker",
+              style: "circle",
+              color: "blue",
+              size: "10px",
+            },
+          });
+
+          // Add the point feature to the map
+          view.graphics.add(pointGraphic);
+
+          // Assuming you have a feature layer, add the point feature to it
+          const featureLayer = new FeatureLayer({
+            url: "https://services2.arcgis.com/O7mWGUyZ5ByPWva6/arcgis/rest/services/WaterMelon/FeatureServer?id=dbc1535d1cb541df9ffea1c56893ae67&token=AAPK75703c0758314001befb358d9c14a646eav8lyA91CQDTCRhozbR4Ft7tVeZBgmvUIQBqhW6SjsznTTc0au_yl8I1HP5USqJ",
+          });
+
+          featureLayer.applyEdits({
+            addFeatures: [pointGraphic], // Add the graphic as a feature
+          }).then(function (editsResult) {
+            // Handle the response after saving the feature
+            console.log("Feature added:", editsResult);
+          });
+        });
+      });
+
+
+            });
+    </script>
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+</html>

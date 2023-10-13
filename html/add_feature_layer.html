@@ -1,0 +1,88 @@
+<!--
+
+To run this demo, you need to replace 'YOUR_API_KEY' with an API key from the ArcGIS Developers dashboard.
+
+Sign up for a free account and get an API key.
+
+https://developers.arcgis.com/documentation/mapping-apis-and-services/get-started/
+
+-->
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <title>ArcGIS Maps SDK for JavaScript Tutorials: Add a feature layer</title>
+    <style>
+      html, body, #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.27/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.27/"></script>
+
+    <script>
+       require([
+         "esri/config",
+         "esri/Map",
+         "esri/views/MapView",
+         "esri/layers/FeatureLayer",
+         "esri/Graphic",
+         "esri/layers/GraphicsLayer"
+
+       ], function(esriConfig, Map, MapView, FeatureLayer, Graphic, GraphicsLayer) {
+
+       esriConfig.apiKey = "AAPK75703c0758314001befb358d9c14a646eav8lyA91CQDTCRhozbR4Ft7tVeZBgmvUIQBqhW6SjsznTTc0au_yl8I1HP5USqJ";
+
+       const map = new Map({
+         basemap: "arcgis-topographic"
+       });
+
+       const graphicsLayer = new GraphicsLayer();
+       map.add(graphicsLayer);
+
+       const view = new MapView({
+         container: "viewDiv",
+         map: map,
+         center: [106.69911358045161,10.742809983058823],
+         zoom: 20
+       });
+
+       const point = { //Create a point
+          type: "point",
+          longitude: 106.69911358045161,
+          latitude: 10.742809983058823
+      };
+
+       const simpleMarkerSymbol = {
+           type: "simple-marker",
+           color: [226, 119, 40],  // Orange
+           outline: {
+               color: [0, 0, 0], // White
+               width: 1
+           }
+       };
+
+       const pointGraphic = new Graphic({
+          geometry: point,
+          symbol: simpleMarkerSymbol,
+          
+      });
+      graphicsLayer.add(pointGraphic);
+
+       });
+    </script>
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+</html>

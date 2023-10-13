@@ -1,0 +1,85 @@
+<!--
+
+To run this demo, you need to replace 'YOUR_API_KEY' with an API key from the ArcGIS Developers dashboard.
+
+Sign up for a free account and get an API key.
+
+https://developers.arcgis.com/documentation/mapping-apis-and-services/get-started/
+
+-->
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <title>
+      ArcGIS Maps SDK for JavaScript Tutorials: Change the basemap layer
+    </title>
+    <style>
+      html, body, #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.27/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.27/"></script>
+
+    <script>
+
+      require([
+        "esri/config",
+        "esri/Map",
+        "esri/views/MapView",
+
+        "esri/widgets/BasemapToggle",
+        "esri/widgets/BasemapGallery"
+
+      ], function(esriConfig, Map, MapView, BasemapToggle, BasemapGallery) {
+
+        esriConfig.apiKey = "AAPK75703c0758314001befb358d9c14a646eav8lyA91CQDTCRhozbR4Ft7tVeZBgmvUIQBqhW6SjsznTTc0au_yl8I1HP5USqJ";
+
+        const map = new Map({
+          basemap: "arcgis-topographic"
+        });
+
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          center: [106.69911358045161,10.742809983058823],
+          zoom: 20
+        });
+
+        const basemapToggle = new BasemapToggle({
+          view: view,
+          nextBasemap: "arcgis-imagery"
+       });
+
+        view.ui.add(basemapToggle,"bottom-right");
+
+        const basemapGallery = new BasemapGallery({
+          view: view,
+          source: {
+            query: {
+              title: '"World Basemaps for Developers" AND owner:esri'
+            }
+          }
+        });
+
+        view.ui.add(basemapGallery, "top-right"); // Add to the view
+
+      });
+    </script>
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+</html>
